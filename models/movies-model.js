@@ -19,7 +19,7 @@ const  moviesSchema=new mongoose.Schema({
         default:["english"]
     },
     releaseDate:{
-        type:Date,
+        type:String,
         required:true
     },
     releaseStatus:{

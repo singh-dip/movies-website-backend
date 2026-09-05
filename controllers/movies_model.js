@@ -1,24 +1,47 @@
-const Movies = require("../models/movies-model")
+const { createMovies, deleteMovies, getId } = require("../services/services")
+const { sendSuccessResponse, sendErrorResponse } = require("../utils/sendResponse")
 
-
-
-const MoviesCreate=async(req,res)=>{
-    try{
-         const result=await Movies.create(req.body)
-        res.status(200).json({
-            result:result,
-            success:true,
-            message:"successfully created movies"
-        })
+const MoviesCreate = async (req, res) => {
+    try {
+        const result = await createMovies(req.body)
+        sendSuccessResponse(res, 200, result, "successfully created movies")
 
     }
-    catch(err){
+    catch (err) {
         console.log(err)
-        res.status(500).json({
-            success:false,
-            message:err.message
-        })
-        
+        sendErrorResponse(res, 500, err)
     }
 }
-module.exports=MoviesCreate
+
+const MoviesDelete = async (req, res) => {
+    try {
+        const data = await deleteMovies({ _id: req.params.id })
+        sendSuccessResponse(res, 200, data, "User deleted successfully")
+
+    }
+    catch (err) {
+        sendErrorResponse(res, 500, err)
+    }
+}
+
+const MoviesGet = async (req, res) => {
+    try {
+        const result = await getId({
+            _id: req.params.id
+        })
+        sendSuccessResponse(res, 200, result, "successfully find movies")
+
+    }
+    catch (err) {
+        if (err.message === "USER_NOT_FOUND") {
+            return sendErrorResponse(res, 500, "The requested movies does not exist")
+        }
+        sendErrorResponse(res, 500, err)
+    }
+}
+
+module.exports = {
+    MoviesCreate,
+    MoviesDelete,
+    MoviesGet
+}
