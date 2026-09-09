@@ -9,29 +9,43 @@ const createMovies= async(MoviesData)=>{
     }
     return data;
 }
-const deleteMovies=async(_id)=>{
-    const result = await modelServices.findByIdAndDelete(_id);
-    if (!result){
+const deleteMovies = async (id) => {
+    const result = await modelServices.findByIdAndDelete(id);
+    if (!result) {
         throw new Error("USER_NOT_FOUND")
-   
-}
-return result;
+    }
+    return result;
 }
 
 
-const getId=async(MoviesId)=>{
-    const userId=await modelServices.findById({_id:MoviesId})
-    if(userId==0){
-        throw new error("User not found")
+const getId = async (id) => {
+    const userId = await modelServices.findById(id)
+    if (!userId) {
+        throw new Error("User not found")
     }
     return userId
 }
+
+const updateData = async (id, load) => {
+    if (!id) {
+        throw new Error("userId not be found")
+    }
+    const result = await modelServices.findByIdAndUpdate(id, load, { new: true })
+    return result
+}
+const search=(searchItem)=>{
+    const query={}
+    
+    
+}
+
 
 
 
 module.exports={
     createMovies,
     deleteMovies,
-    getId
+    getId,
+    updateData
 
 }    
