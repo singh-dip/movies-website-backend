@@ -9,6 +9,7 @@ const createMovies= async(MoviesData)=>{
     }
     return data;
 }
+//delete movies
 const deleteMovies = async (id) => {
     const result = await modelServices.findByIdAndDelete(id);
     if (!result) {
@@ -17,7 +18,7 @@ const deleteMovies = async (id) => {
     return result;
 }
 
-
+// get movies data list 
 const getId = async (id) => {
     const userId = await modelServices.findById(id)
     if (!userId) {
@@ -36,13 +37,12 @@ const updateData = async (id, load) => {
 const multiFieldSearch = async (searchTerm) => {
     const regex = new RegExp(searchTerm, 'i');
 
-    // $or means: match if ANY of these conditions are true
-    const movies = await Movie.find({
+    const movies = await modelServices.find({
         $or: [
-            { title: regex },       // Does the title contain "nolan"?
-            { director: regex },    // Does the director name contain "nolan"?
-            { genre: regex },       // Does the genre contain "nolan"?
-            { description: regex }  // Does the description contain "nolan"?
+            { name: regex },
+            { director: regex },
+            { casts: regex },
+            { description: regex }
         ]
     });
 

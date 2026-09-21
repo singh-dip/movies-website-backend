@@ -1,9 +1,11 @@
 const theaterServices=require('../models/Theaters.model')
+const moviesService=require("../models/movies-model")
+
 
 const createTheaters=async(data)=>{
     const result= await theaterServices.create(data)
     
-    return result
+    return result 
 }
 
 const DeleteTheatersId=async(id)=>{
@@ -20,7 +22,8 @@ const searchTheaters = async (searchTerm) => {
         $or: [
             { name: regex },
             { city: regex },
-            { address: regex }
+            { Address: regex },
+            {Zipcode:regex}
         ],
         isActive: true // Only show active theaters
     })
@@ -34,12 +37,25 @@ const updateId=async(theatersId, updateData)=>{
         throw new Error("theatres not be found")
     }
     return result
-
 }
+const serviceTheaters= async(theaterId,moviesId)=>{
+    const result= await theaterServices.findById(theaterId)
+    if(!result){
+        throw new Error("theatersId not be found")
+    }
+    const movie=movies.find({
+        _id:{$in:moviesId}
+    }).select(_id)
+    const validMovies=movie.map(movies=>movies._id)
 
+    result.movies=validMovies
+    await result.save()
+    return result
+}
 module.exports={
      createTheaters,
      DeleteTheatersId,
-     searchTheaters,updateId
+     searchTheaters,updateId,
+     serviceTheaters
 
 }

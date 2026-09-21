@@ -6,7 +6,9 @@ const {
     createTheaters, 
     DeleteTheatersId, 
     searchTheaters, 
-    updateId 
+    updateId ,
+    serviceTheaters
+
 } = require('../services/theaters.service');
 
 // 2. Import the utility functions for clean responses
@@ -88,3 +90,20 @@ exports.deleteTheater = async (req, res) => {
         sendErrorResponse(res, statusCode, error.message);
     }
 };
+
+exports.serviceUpdate=async(req,res)=>{
+    try{
+        const theaterId =req.params.id
+        const moviesId=req.body
+        const result= await serviceTheaters.update(theaterId,  moviesId)
+         sendSuccessResponse(res,200,result,"successfully add the moviesId")
+
+
+    }
+    catch(error){
+         const statusCode = error.name === 'CastError' ? 400 : 404;
+        sendErrorResponse(res, statusCode, error.message);
+    }
+
+    
+}

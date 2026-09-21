@@ -13,7 +13,7 @@ const MoviesCreate = async (req, res) => {
     }
 }
 
-const Delte = async (req, res) => {
+const  MoviesDelete = async (req, res) => {
     try {
         const data = await deleteMovies(req.params.id)
         sendSuccessResponse(res, 200, data, "User deleted successfully")
@@ -52,7 +52,7 @@ const update=async(req,res)=>{
         sendErrorResponse(res, 500, err)
 
     }
-},
+}
 const  searchField = async (req, res) => {
     try {
         const query = req.query.q;
