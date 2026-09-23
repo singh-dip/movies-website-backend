@@ -5,7 +5,7 @@ const theatersRoutes = require("./Routes/theaters.routes")
 
 dotenv.config()
 
-const PORT = process.env.PORT || 500
+const PORT = process.env.PORT || 3000
 
 MoviesRoutes(app)
 theatersRoutes(app)
