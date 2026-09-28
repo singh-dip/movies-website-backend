@@ -1,4 +1,4 @@
-const { createMovies, deleteMovies, getId, updateData, } = require("../services/services")
+const { createMovies, deleteMovies, getId, updateData,multiFieldSearch } = require("../services/services")
 const { sendSuccessResponse, sendErrorResponse } = require("../utils/sendResponse")
 
 const MoviesCreate = async (req, res) => {
@@ -13,7 +13,7 @@ const MoviesCreate = async (req, res) => {
     }
 }
 
-const MoviesDelete = async (req, res) => {
+const  MoviesDelete = async (req, res) => {
     try {
         const data = await deleteMovies(req.params.id)
         sendSuccessResponse(res, 200, data, "User deleted successfully")
@@ -53,11 +53,27 @@ const update=async(req,res)=>{
 
     }
 }
+const  searchField = async (req, res) => {
+    try {
+        const query = req.query.q;
+
+        if (!query || query.trim() === '') {
+            return res.status(400).json({ success: false, message: 'Search term required' });
+        }
+
+        const movies = await multiFieldSearch(query.trim());
+
+        res.status(200).json({ success: true, count: movies.length, data: movies });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
 
 module.exports = {
     MoviesCreate,
     MoviesDelete,
     MoviesGet,
-    update
+    update,
+    searchField
     
 }

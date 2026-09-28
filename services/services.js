@@ -9,6 +9,7 @@ const createMovies= async(MoviesData)=>{
     }
     return data;
 }
+//delete movies
 const deleteMovies = async (id) => {
     const result = await modelServices.findByIdAndDelete(id);
     if (!result) {
@@ -17,7 +18,7 @@ const deleteMovies = async (id) => {
     return result;
 }
 
-
+// get movies data list 
 const getId = async (id) => {
     const userId = await modelServices.findById(id)
     if (!userId) {
@@ -33,11 +34,20 @@ const updateData = async (id, load) => {
     const result = await modelServices.findByIdAndUpdate(id, load, { new: true })
     return result
 }
-const search=(searchItem)=>{
-    const query={}
-    
-    
-}
+const multiFieldSearch = async (searchTerm) => {
+    const regex = new RegExp(searchTerm, 'i');
+
+    const movies = await modelServices.find({
+        $or: [
+            { name: regex },
+            { director: regex },
+            { casts: regex },
+            { description: regex }
+        ]
+    });
+
+    return movies;
+};
 
 
 
@@ -46,6 +56,8 @@ module.exports={
     createMovies,
     deleteMovies,
     getId,
-    updateData
+    updateData,
+    multiFieldSearch 
+
 
 }    
