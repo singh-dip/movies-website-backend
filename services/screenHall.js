@@ -42,8 +42,16 @@ const updateData=async(dataId, data)=>{
     } 
     return updateDataId
 }
+const deleteData=async(id)=>{
+    const result = await Screen.findByIdAndDelete(id)
+    if(!result){
+        throw new Error("invalid screen")
+    }
+    result
+}
  
-module.exports = { screenCreate,multiScreen,getOneScreen,updateData }
+
+module.exports = { screenCreate,multiScreen,getOneScreen,updateData,deleteData }
 
 // NOTE: The controller (controllers/screenHall.js) must also be updated to import from this service:
 // OLD: const {screenCreate}populate(result)=require("../models/screen-model")

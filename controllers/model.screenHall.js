@@ -1,4 +1,4 @@
-const { screenCreate,multiScreen ,getOneScreen,updateData } = require("../services/screenHall")
+const { screenCreate,multiScreen ,getOneScreen,updateData,deleteData } = require("../services/screenHall")
 const { sendSuccessResponse, sendErrorResponse } = require("../utils/sendResponse")
 
 // ERROR FIXED: Import from service (../services/screenHall), not model
@@ -67,6 +67,21 @@ const update_Data=async(req,res)=>{
     }
 }
 
+const dataDelete=async(req,res)=>{
+   try{
+     const dataId=req.params.id;
+    const data_id=await deleteData(dataId)
+     sendSuccessResponse(res,200,data_id,"Data delete successfully")
 
 
-module.exports = { screenCreates,multiScreens,getSCreen,update_Data}
+   }
+   catch(error){
+     sendErrorResponse(res, 400, error)
+
+   }
+
+}
+
+
+
+module.exports = { screenCreates,multiScreens,getSCreen,update_Data,dataDelete}
