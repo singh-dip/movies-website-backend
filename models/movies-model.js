@@ -25,7 +25,12 @@ const  moviesSchema=new mongoose.Schema({
     releaseStatus:{
         type:String,
         required:true
-    }
+    }, 
+    durationInMinutes: {
+    type: Number,
+    required: true, // An admin MUST enter how long the movie is when creating it
+    min: 1 // A movie cannot be 0 minutes long
+  },
     
     
 },{timestamps:true})
